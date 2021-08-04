@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
+import { CryptoService } from './crypto.service';
+import { Coin } from './coin';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'angularblockchain';
+  coins!: Coin[];
+
+  constructor(private service: CryptoService) {
+    this.loadCoins();
+  }
+
+  loadCoins() {
+    this.service.list().subscribe((coins) => {
+      this.coins = coins.map((c: any) => new Coin(c));
+    });
+  }
 }
